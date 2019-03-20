@@ -1,0 +1,20 @@
+.problem-description{
+    margin-top: 40px;
+}
+
+.code-submit{
+    margin-top: 15px;
+    float: right;
+}
+
+.min-mugshot{
+    border-radius:2px;
+    width: 24px;
+    display: inline;
+}
+
+
+
+.contest-jumbotron{
+    margin-top: -30px;
+}
