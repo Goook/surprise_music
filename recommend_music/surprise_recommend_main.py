@@ -1,6 +1,6 @@
 # -*- coding:utf-8-*-
 """
-利用surprise推荐库 KNN协同过滤算法推荐网易云歌单
+利用surprise推荐库 KNN协同过滤算法推荐网易云歌曲
 python2.7环境
 """
 from __future__ import (absolute_import, division, print_function, unicode_literals)
@@ -11,7 +11,7 @@ from surprise import Dataset
 
 
 def recommend_model():
-    file_path = os.path.expanduser('neteasy_playlist_recommend_data.csv')
+    file_path = os.path.expanduser('../analytical_file/singer_recommend.txt')
     # 指定文件格式
     reader = Reader(line_format='user item rating timestamp', sep=',')
     # 从文件读取数据
@@ -26,7 +26,7 @@ def recommend_model():
 
 
 def playlist_data_preprocessing():
-    csv_reader = csv.reader(open('neteasy_playlist_id_to_name_data.csv', encoding='utf-8'))
+    csv_reader = csv.reader(open('../analytical_file/singer_id_to_name.txt', encoding='utf-8'))
     id_name_dic = {}
     name_id_dic = {}
     for row in csv_reader:
@@ -37,7 +37,7 @@ def playlist_data_preprocessing():
 
 
 def song_data_preprocessing():
-    csv_reader = csv.reader(open('neteasy_song_id_to_name_data.csv'))
+    csv_reader = csv.reader(open('../analytical_file/song_id_to_name.txt', encoding='utf8'))
     id_name_dic = {}
     name_id_dic = {}
     for row in csv_reader:
@@ -48,28 +48,28 @@ def song_data_preprocessing():
 
 
 def playlist_recommend_main():
-    print("加载歌单id到歌单名的字典映射...")
-    print("加载歌单名到歌单id的字典映射...")
-    id_name_dic, name_id_dic = playlist_data_preprocessing()
+    print("加载歌曲id到歌曲名的字典映射...")
+    print("加载歌曲名到歌曲id的字典映射...")
+    id_name_dic, name_id_dic = song_data_preprocessing()
     print("字典映射成功...")
     print('构建数据集...')
     algo = recommend_model()
     print('模型训练结束...')
 
     current_playlist_id = list(id_name_dic.keys())[200]
-    print('当前的歌单id：' + current_playlist_id)
+    print('当前的歌曲id：' + current_playlist_id)
 
     current_playlist_name = id_name_dic[current_playlist_id]
-    print('当前的歌单名字：' + current_playlist_name)
+    print('当前的歌曲名字：' + current_playlist_name)
 
     playlist_inner_id = algo.trainset.to_inner_uid(current_playlist_id)
-    print('当前的歌单内部id：' + str(playlist_inner_id))
+    print('当前的歌曲内部id：' + str(playlist_inner_id))
 
     playlist_neighbors = algo.get_neighbors(playlist_inner_id, k=10)
     playlist_neighbors_id = (algo.trainset.to_raw_uid(inner_id) for inner_id in playlist_neighbors)
     # 把歌曲id转成歌曲名字
     playlist_neighbors_name = (id_name_dic[playlist_id] for playlist_id in playlist_neighbors_id)
-    print("和歌单<", current_playlist_name, '> 最接近的10个歌单为：\n')
+    print("和歌曲<", current_playlist_name, '> 最接近的10个歌曲为：\n')
     for playlist_name in playlist_neighbors_name:
         print(playlist_name, name_id_dic[playlist_name])
 
