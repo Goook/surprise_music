@@ -1,8 +1,5 @@
 # -*- coding:utf-8-*-
-"""
-利用surprise推荐库 KNN协同过滤算法推荐网易云歌曲
-python2.7环境
-"""
+
 from __future__ import (absolute_import, division, print_function, unicode_literals)
 import os
 import csv
@@ -45,18 +42,27 @@ def song_data_preprocessing():
         name_id_dic[row[1]] = row[0]
 
     return id_name_dic, name_id_dic
+def recommend_data(song_name, source):
+    song_id = '100002'
+    singer_id = '100003'
+    with open('../singer_recommend.txt', 'a') as f:
+        size = f.tell()
+        f.write(song_id+','+singer_id+','+str(source)+',1300000')
+    return size
 
 
-def playlist_recommend_main():
+def playlist_recommend_main(song_name):
     print("加载歌曲id到歌曲名的字典映射...")
     print("加载歌曲名到歌曲id的字典映射...")
     id_name_dic, name_id_dic = song_data_preprocessing()
+    # singer_id_name_dic, singer_name_id_dic = playlist_data_preprocessing()
+    # if not song_name_id_dic.get(song_name,0):
     print("字典映射成功...")
     print('构建数据集...')
     algo = recommend_model()
     print('模型训练结束...')
 
-    current_playlist_id = list(id_name_dic.keys())[200]
+    current_playlist_id = name_id_dic.get(song_name, 95886)
     print('当前的歌曲id：' + current_playlist_id)
 
     current_playlist_name = id_name_dic[current_playlist_id]
@@ -70,11 +76,33 @@ def playlist_recommend_main():
     # 把歌曲id转成歌曲名字
     playlist_neighbors_name = (id_name_dic[playlist_id] for playlist_id in playlist_neighbors_id)
     print("和歌曲<", current_playlist_name, '> 最接近的10个歌曲为：\n')
-    for playlist_name in playlist_neighbors_name:
-        print(playlist_name, name_id_dic[playlist_name])
+    # for playlist_name in playlist_neighbors_name:
+    #     print(playlist_name, name_id_dic[playlist_name])
+    return {'data':[{'song_name':song_name,'song_id':name_id_dic[song_name]} for song_name in playlist_neighbors_name],'message':'success'}
 
 
-playlist_recommend_main()
+def order_rule(s):
+    return int(s.split(',')[2])
+
+
+def hot_recommend(num = 10):
+    with open('../analytical_file/singer_recommend.txt', 'r', encoding='utf8') as f:
+        data_list = f.readlines()
+    data_list = sorted(data_list, key=order_rule)
+    lists = {'data':[],'message':'success'}
+    id_name_dic, name_id_dic = song_data_preprocessing()
+    try:
+        for song_singer_rate_time in data_list[-num:]:
+            lists['data'].append(id_name_dic[song_singer_rate_time.split(',')[0]])
+    except Exception as e:
+        print(e)
+    return lists
+
+
+if __name__ =='__main__':
+    data=playlist_recommend_main('微笑着胜利(庆祝建军91周年网宣主题曲)(伴奏)')
+    print(data)
+    # print(hot_recommend())
 
 # file_path = os.path.expanduser('neteasy_playlist_recommend_data.csv')
 # # 指定文件格式
