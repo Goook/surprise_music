@@ -12,7 +12,7 @@ class User(AbstractUser):
     sex = models.CharField(verbose_name='性别', max_length=10, blank=True)
     birthday = models.DateField(verbose_name='生日', blank=True, null=True)
     introduce = models.CharField(verbose_name='个人介绍', max_length=64, blank=True)
-    last_login = models.DateField(verbose_name='最近登录', default=now)
+    # last_login = models.DateField(verbose_name='最近登录', default=now)
 
 
     class Meta:

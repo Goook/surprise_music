@@ -4,3 +4,4 @@
 virtualenv/
 __pychche__/
 *.py[cod]
+.idea
