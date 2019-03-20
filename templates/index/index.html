@@ -1,11 +1,62 @@
 {% extends 'basic/base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
 
 {% block main %}
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Surprise</h1>
-          <p>给你不一样的推荐惊喜！</p>
-          <p><a class="btn btn-primary btn-lg" href="/accounts/register/" role="button">learn more</a></p>
-      </div>
+{% if user.id %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <ul>
+                <li class="recommend-music-item">
+                    <div>
+                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                        <p>歌手名字：歌曲名字</p>
+                        <p>播放量：</p>
+                    </div>
+                </li>
+                                <li class="recommend-music-item">
+                    <div>
+                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                        <p>歌手名字：歌曲名字</p>
+                        <p>播放量：</p>
+                    </div>
+                </li>
+                <li class="recommend-music-item">
+                    <div>
+                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                        <p>歌手名字：歌曲名字</p>
+                        <p>播放量：</p>
+                    </div>
+                </li>
+                <li class="recommend-music-item">
+                    <div>
+                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                        <p>歌手名字：歌曲名字</p>
+                        <p>播放量：</p>
+                    </div>
+                </li>
+                <li class="recommend-music-item">
+                    <div>
+                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                        <p>歌手名字：歌曲名字</p>
+                        <p>播放量：</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-2"></div>
     </div>
+{% else %}
+<div class="jumbotron">
+  <div class="container">
+    <h1>Surprise</h1>
+      <p>给你不一样的推荐惊喜！</p>
+        <p><a class="btn btn-primary btn-lg" href="/accounts/register/" role="button">learn more</a></p>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

@@ -1,5 +1,6 @@
 $(function () {
     $('.profile-panel').on('click', '.profile-editor', function () {
+        $(this).toggleClass('profile-editor')
         let field = $(this).data('field');
         let fieldClass = '.td-profile-' + field
         if(field === 'email'){
@@ -10,9 +11,6 @@ $(function () {
                 '  </div>' +
                 '</form>'
 
-
-        }
-        else if(field === 'birthday'){
 
         }
         else if(field === 'password'){
@@ -37,15 +35,24 @@ $(function () {
         let field = $('.profile-update-group').data('field');
         let fieldClass = '.td-profile-' + field;
         $(fieldClass).html(initValue)
+        $(fieldClass).next().children().toggleClass('profile-editor')
     });
     $('.profile-panel').on('click', '.profile-edit-submit', function () {
-        field = $('.profile-update-group').data('field');
-        updateValue = $('.profile-text-input').val();
-        $.post("/accounts/profile/"+ field + "/", {sdf: updateValue}, function (res) {
-            let fieldClass = '.td-profile-' + field;
-            let value = res;
-            $(fieldClass).html(res)
+        let field = $('.profile-update-group').data('field');
+        let updateValue = $('.profile-text-input').val();
+        let fieldClass = '.td-profile-' + field;
+        let initValue = $('.profile-text-input').data('initial');
+        $.post("/accounts/profile/"+ field + "/", {field: field, data: updateValue}, function (res) {
+            if(res['status']){
+                $(fieldClass).html(res['data']);
+                swal('修改成功', res['msg'], "success")
+            }
+            else{
+                $(fieldClass).html(initValue)
+                swal('修改失败', res['msg'], "error")
+            }
         })
+        $(fieldClass).next().children().toggleClass('profile-editor')
     })
 });
 
