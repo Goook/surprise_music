@@ -11,41 +11,16 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <ul>
-                <li class="recommend-music-item">
-                    <div>
-                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
-                        <p>歌手名字：歌曲名字</p>
-                        <p>播放量：</p>
-                    </div>
-                </li>
-                                <li class="recommend-music-item">
-                    <div>
-                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
-                        <p>歌手名字：歌曲名字</p>
-                        <p>播放量：</p>
-                    </div>
-                </li>
-                <li class="recommend-music-item">
-                    <div>
-                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
-                        <p>歌手名字：歌曲名字</p>
-                        <p>播放量：</p>
-                    </div>
-                </li>
-                <li class="recommend-music-item">
-                    <div>
-                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
-                        <p>歌手名字：歌曲名字</p>
-                        <p>播放量：</p>
-                    </div>
-                </li>
-                <li class="recommend-music-item">
-                    <div>
-                        <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
-                        <p>歌手名字：歌曲名字</p>
-                        <p>播放量：</p>
-                    </div>
-                </li>
+                 {% for music in hots %}
+                     <li class="recommend-music-item">
+                        <div>
+                            <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                            <p>歌曲：{{ music.name }}</p>
+                            <p>歌手：{{ music.singer }}</p>
+                            <p>播放量：0</p>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
         <div class="col-md-2"></div>
