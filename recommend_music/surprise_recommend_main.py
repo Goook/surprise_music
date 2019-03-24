@@ -8,7 +8,7 @@ from surprise import Dataset
 
 
 def recommend_model():
-    file_path = os.path.expanduser('../analytical_file/singer_recommend.txt')
+    file_path = os.path.expanduser('../analytical_file/singer_song.txt')
     # 指定文件格式
     reader = Reader(line_format='user item rating timestamp', sep=',')
     # 从文件读取数据
@@ -45,7 +45,7 @@ def song_data_preprocessing():
 def recommend_data(song_name, source):
     song_id = '100002'
     singer_id = '100003'
-    with open('../singer_recommend.txt', 'a') as f:
+    with open('../analytical/singer_song.txt', 'a') as f:
         size = f.tell()
         f.write(song_id+','+singer_id+','+str(source)+',1300000')
     return size
@@ -62,7 +62,7 @@ def playlist_recommend_main(song_name):
     algo = recommend_model()
     print('模型训练结束...')
 
-    current_playlist_id = name_id_dic.get(song_name, 95886)
+    current_playlist_id = name_id_dic.get(song_name, 95)
     print('当前的歌曲id：' + current_playlist_id)
 
     current_playlist_name = id_name_dic[current_playlist_id]
@@ -72,13 +72,12 @@ def playlist_recommend_main(song_name):
     print('当前的歌曲内部id：' + str(playlist_inner_id))
 
     playlist_neighbors = algo.get_neighbors(playlist_inner_id, k=10)
-    playlist_neighbors_id = (algo.trainset.to_raw_uid(inner_id) for inner_id in playlist_neighbors)
+    playlist_neighbors_id = [algo.trainset.to_raw_uid(inner_id) for inner_id in playlist_neighbors]
+    print(playlist_neighbors_id)
     # 把歌曲id转成歌曲名字
-    playlist_neighbors_name = (id_name_dic[playlist_id] for playlist_id in playlist_neighbors_id)
+    playlist_neighbors_name = [id_name_dic.get(playlist_id,None) for playlist_id in playlist_neighbors_id]
     print("和歌曲<", current_playlist_name, '> 最接近的10个歌曲为：\n')
-    # for playlist_name in playlist_neighbors_name:
-    #     print(playlist_name, name_id_dic[playlist_name])
-    return {'data':[{'song_name':song_name,'song_id':name_id_dic[song_name]} for song_name in playlist_neighbors_name],'message':'success'}
+    return {'data':[{'song_name':song_name,'song_id':name_id_dic.get(song_name, 1)} for song_name in playlist_neighbors_name],'message':'success'}
 
 
 def order_rule(s):
@@ -86,7 +85,7 @@ def order_rule(s):
 
 
 def hot_recommend(num = 10):
-    with open('../analytical_file/singer_recommend.txt', 'r', encoding='utf8') as f:
+    with open('../analytical_file/singer_song.txt', 'r', encoding='utf8') as f:
         data_list = f.readlines()
     data_list = sorted(data_list, key=order_rule)
     lists = {'data':[],'message':'success'}
