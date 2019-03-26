@@ -12,8 +12,7 @@ $(function () {
         lyrics: '',
     };
 
-    alert(Audio.audio)
-        const ELEMENT = {
+    const ELEMENT = {
         btnLike: '.btn1',
         btnAdd: '.btn2',
         btnDownload: '.btn3',
@@ -23,7 +22,7 @@ $(function () {
         durationProgress: '.progress',
         currentTimeProgress : '.progress-runaway',
         btnProgress: '.progress-btn',
-        iconVolume: '.volume-btn',
+        iconVolume: '.volume-btn-click',
         btnVolume: '.volume-btn-mobile',
         volumeProgress: '.volume-progress',
         currentVolumeProgress: '.volume-runaway',
@@ -137,9 +136,9 @@ $(function () {
 
     function loadInitial(){
         let volumeLength = Audio.audio.volume * (endVolumeLocation- beginVolumeLocation);
-        currentVolumeLocation = volumeLength + beginVolumeLocation;
-        if (currentVolumeLocation >= beginVolumeLocation && currentVolumeLocation <= endVolumeLocation) {
-            $(ELEMENT.btnVolume).css('left', currentVolumeLocation);
+        let currentVolumeLeft = volumeLength + $(ELEMENT.btnVolume).css('left');
+        if (currentVolumeLeft >= beginVolumeLocation && currentVolumeLeft <= endVolumeLocation) {
+            $(ELEMENT.btnVolume).css('left', currentVolumeLeft);
             $(ELEMENT.currentVolumeProgress).css('width', volumeLength);
         }
         $(ELEMENT.musicName).each(function () {
@@ -157,16 +156,6 @@ $(function () {
         let url = Audio.lrc[Audio.currentIndex];
         changeHtmlPlayMessage(url, '#0', currentId);
         // while (!Audio.audio.readyState){}  判断数据是否就绪,但是似乎没有作用
-        let btnPlay = $(ELEMENT.btnPlay);
-        btnPlay.toggleClass('audio_pause');
-        btnPlay.toggleClass('audio_play');
-        alert(Audio.audio.paused)
-        if (Audio.audio.paused){
-             Audio.audio.play();
-             alert(Audio.audio.paused)
-        }
-        else
-            Audio.audio.pause();
     }
     loadInitial();
 
@@ -202,11 +191,130 @@ $(function () {
         second = time - minute * 60;
         if (second < 10) second = '0' + second;
         $(ELEMENT.duration).html(minute + ':' + second);
+        let btnPlay = $(ELEMENT.btnPlay);
+        btnPlay.toggleClass('audio_pause');
+        btnPlay.toggleClass('audio_play');
+        if (Audio.audio.paused){
+             Audio.audio.play();
+        }
+        else
+            Audio.audio.pause();
         // $(ELEMENT.playingMusicName).html(Audio.musicName[Audio.currentIndex]);
         // $(ELEMENT.playingSingerName).html(Audio.musicSinger[Audio.currentIndex]);
     };
 
+    var movingProgress =false;
+    // 进度条跟随播放进度
+    function playChangeProgress() {
+        if(!movingProgress) {
+            let currentPlayTime = Audio.audio.currentTime;
+            let duration = Audio.audio.duration;
+            let progressLength = $(ELEMENT.durationProgress).outerWidth();
+            let runawayLength = currentPlayTime / duration * progressLength;
+            $(ELEMENT.currentTimeProgress).css('width', runawayLength);
+            // $('.progress-span2').html(beginLeft + runawayLength);
 
+            $(ELEMENT.btnProgress).css('left', runawayLength);
+        }
+    }
 
+    setInterval(playChangeProgress, 100);
 
+    function nextMusic(){
+        let preId = Audio.rowsId[Audio.currentIndex];
+        let targetIndex = Audio.currentIndex + 1;
+        if(isWhile === 0){}
+        else if(isWhile === 1){
+            targetIndex = Audio.currentIndex;
+        }else{
+            targetIndex = Math.floor(Math.random()*Audio.srcs.length);
+        }
+        Audio.currentIndex = targetIndex > Audio.srcs.length - 1 ? 0 : targetIndex;
+        Audio.audio.src = Audio.srcs[Audio.currentIndex];
+        let currentId = Audio.rowsId[Audio.currentIndex];
+        let url = Audio.lrc[Audio.currentIndex];
+        changeHtmlPlayMessage(url, preId,currentId);
+        Audio.audio.play()
+    }
+
+    Audio.audio.onended = nextMusic;
+
+    $(ELEMENT.channel).on('click', ELEMENT.btnNext, nextMusic);
+
+    $(ELEMENT.channel).on('click', ELEMENT.btnPre, function () {
+        let preId = Audio.rowsId[Audio.currentIndex];
+        let targetIndex = Audio.currentIndex - 1;
+        if(isWhile === 0){}
+        else if(isWhile === 1){
+            targetIndex = Audio.currentIndex;
+        }else{
+            targetIndex = Math.floor(Math.random()*Audio.srcs.length);
+        }
+        Audio.currentIndex = targetIndex < 0 ? Audio.srcs.length - 1 : targetIndex;
+        Audio.audio.src = Audio.srcs[Audio.currentIndex];
+        let currentId = Audio.rowsId[Audio.currentIndex];
+        let url = Audio.lrc[Audio.currentIndex];
+        changeHtmlPlayMessage(url, preId, currentId);
+        Audio.audio.play()
+    });
+
+    function displayCurrentTime() {
+        span = $(ELEMENT.currentTime);
+        time = parseInt(Audio.audio.currentTime);
+        minute = parseInt(time / 60);
+        if (minute < 10) minute = '0' + minute;
+        second = time - minute * 60;
+        if (second < 10) second = '0' + second;
+        span.html(minute + ':' + second);
+    }
+
+    var timer = setInterval(displayCurrentTime, 500);
+
+    $(ELEMENT.musicName).dblclick(function (e) {
+        let preId = Audio.rowsId[Audio.currentIndex];
+        let currentId = $(this).data('id');
+        let targetIndex = $(currentId).find(ELEMENT.serialNumber).html() - 1;
+        Audio.currentIndex = targetIndex >= 0 && targetIndex <= Audio.srcs.length -1 ? targetIndex : 0;
+        Audio.audio.src = Audio.srcs[Audio.currentIndex];
+        let url = Audio.lrc[Audio.currentIndex];
+        changeHtmlPlayMessage(url, preId,currentId);
+        Audio.audio.play();
+    })
+
+    $(ELEMENT.channel).on('click', ELEMENT.divWhile, function () {
+        isWhile = (isWhile + 1) % 3;
+        if(isWhile === 0){
+            $(this).css('background-image', 'url("/static/images/while_play.png")')
+        }else if(isWhile === 1){
+            $(this).css('background-image', 'url("/static/images/singer_play.png")')
+        }else{
+            $(this).css('background-image', 'url("/static/images/random_play.png")')
+        }
+    });
+
+    // 点击收藏按钮所执行的函数
+    function addToLike(){
+        let selectedMusicId = [];
+        $(ELEMENT.singerCheck).each(function () {
+            if($(this).is(':checked')){
+                selectedMusicId.push($(this).attr('value'));
+            }
+        });
+
+        $.ajax({
+             type: "POST",
+             url: "/player/like_selected/",
+             traditional:true,
+             data: {'list': selectedMusicId},
+             success: function(response) {
+                 let myWindow = $(ELEMENT.window)
+                 myWindow.find('span').html(response);
+                 myWindow.css('display', 'block');
+                 setTimeout(function () {
+                     myWindow.css('display', 'none');
+                 }, 1000);
+             },
+        });
+    }
+    $(ELEMENT.btnLike).click(addToLike);
 });

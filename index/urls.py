@@ -6,3 +6,4 @@ app_name = 'index'
 urlpatterns = [
     path(r'', views.IndexView.as_view())
 ]
+

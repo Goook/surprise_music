@@ -352,7 +352,7 @@ $(function () {
         }
     }
 
-    setInterval(playChangeProgress, 50);
+    setInterval(playChangeProgress, 100);
 
 
     var isMove = false;  //当为true 是  移动事件被监听

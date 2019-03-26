@@ -15,7 +15,7 @@
                      <li class="recommend-music-item">
                         <a href="/music/player/{{ music.list_id }}" target="_blank">
                         <div>
-                            <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                            <img class="recommend-music-img" src="/static{{ music.music_pic }}"/>
                             <div class="music-name"><p>歌曲：{{ music.music_name }}</p></div>
                             <div class="music-singer"><p>歌手：{{ music.singer }}</p></div>
                             <div class="play-no"><p>播放量：0</p></div>
@@ -36,7 +36,7 @@
                         <h1>{{ music.list_id}}</h1>
                         <a href="/music/player/{{ music.list_id }}" target="_blank">
                             <div>
-                                <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                                <img class="recommend-music-img" src="/static{{ music.music_pic }}"/>
                                 <div class="music-name"><p>歌曲：{{ music.music_name }}</p></div>
                                 <div class="music-singer"><p>歌手：{{ music.singer }}</p></div>
                                 <div class="play-no"><p>播放量：0</p></div>
