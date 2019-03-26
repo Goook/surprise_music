@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<table class="table table-striped">
+    <tr>
+        <td></td>
+        <td><b>#</b></td>
+        <td><b>歌曲</b></td>
+        <td><b>歌手</b></td>
+        <td><b>专辑</b></td>
+        <td><b>时长</b></td>
+    </tr>
+    {% for favourite in favourites %}
+        <tr>
+            <td></td>
+            <td>{{ favourite.id }}</td>
+            <td><a href="/music/player/{{ favourite.id }}">{{ favourite.music.music_name }}</a></td>
+            <td>#</td>
+            <td>100%</td>
+            <td>{{ favourite.music.duration }}</td>
+        </tr>
+    {% endfor %}
+</table>

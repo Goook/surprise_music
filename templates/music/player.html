@@ -3,111 +3,125 @@
 <html>
     <head>
         <title>player</title>
+        <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet">
+        <!--你自己的样式文件 -->
+        <link href="{% static 'css/reset.css' %}" rel="stylesheet">
+        <script src="{% static 'sweetalert-master/docs/assets/sweetalert/sweetalert.min.js' %}"></script>
         <link rel="stylesheet" type="text/css" href="{% static 'css/player.css' %}">
-        <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
         <style>
         </style>
     </head>
     <body>
         <div id="pic_bg"></div>
         <div id="main_bg">
-            <div class="title"><h1>海螺音乐</h1></div>
-            {% if userImage %}
-                 <div class="user_msg"><a href="/music" target="_blank"><img class="user_picture" src="{% static userImage %}" alt="无法显示"></a></div>
-            {% else%}
-                <div class="user_msg"><a href="/accounts/login/">请先登录</a></div>
-            {% endif %}
+{#            <div class="title"><h1>Surprise</h1></div>#}
+{#            {% if userImage %}#}
+{#                 <div class="user_msg"><a href="/music" target="_blank"><img class="user_picture" src="{% static userImage %}" alt="无法显示"></a></div>#}
+{#            {% else%}#}
+{#                <div class="user_msg"><a href="/accounts/login/">请先登录</a></div>#}
+{#            {% endif %}#}
             <div class="main">
-                <div class="list">
-                    <div class="func_btn">
-                        <a class="btn1"><i class="img_collect"></i><span>收藏</span></a>
-                        <a class="btn2"><i class="img_add"></i><span>添加到</span></a>
-                        <a class="btn3"><i class="img_download"></i><span>下载</span></a>
-                        <a class="btn4" href=""><i class="img_delete"></i><span>删除</span></a>
-                        <a class="btn5" href="music?list_id=0"><i class="img_flush"></i><span>清空列表</span></a>
-                    </div>
-                    <form>
-                        <div class="music_list" data-play_id="#{{ music_id }}">
-                        <ul>
-                            <li class="list_title">
-                                <div class="title_music">
-                                    <div class="check"><input class="all_check" type="checkbox"></div>
-                                    <div class="title-music-label"><label>歌曲</label></div>
+                <div class="row">
+                    <div class="col-md-1 margin_left"></div>
+                    <div class="col-md-8 list">
+                            <div class="func_btn">
+                                    <a class="btn1"><i class="img_collect"></i><span>收藏</span></a>
+                                    <a class="btn2"><i class="img_add"></i><span>添加到</span></a>
+                                    <a class="btn3"><i class="img_download"></i><span>下载</span></a>
+                                    <a class="btn4" href=""><i class="img_delete"></i><span>删除</span></a>
+                                    <a class="btn5" href="music?list_id=0"><i class="img_flush"></i><span>清空列表</span></a>
                                 </div>
-                                <div class="title_singer"><label>歌手</label></div>
-                                <div class="title_time"><label>时长</label></div>
-                            </li>
-                            {% for music in music_list %}
-                                <li>
-                                    <div class="music-recording" id="{{ music.list_id }}">
-                                        <div class="music">
-                                            <div class="check"><input class="singer-check" type="checkbox" value="{{ music.list_id }}"><label class="serial-number">{{ forloop.counter }}</label></div>
-                                            <div data-lrc="/static{{ music.lrc_path }}" class="music_name" data-id="#{{ music.list_id }}" data-back="/static{{ music.music_pic }}" data-picture="/static{{ music.music_pic }}" data-singer="{{ music.singer }}" data-music_path="../../static/{{ music.music_path }}" ><label>{{ music.music_name }}</label></div>
-                                            <div class="delete"><a class="delete_a"></a></div>
-                                            <div class="download"><a class="download_a" href="{% static music.music_path %}" download="{{ music.music_name }}.mp3"></a></div>
-                                            <div class="add"><a class="add_a"></a></div>
-                                            <div class="play" data-music_path="{{ music.music_path }}"><a class="play_a"></a></div>
-                                        </div>
-                                        <div class="singer"><a>{{ music.singer }}</a></div>
-                                        <div class="time"><label>{{ music.length_time }}</label></div>
+                                <form>
+                                    <div class="music_list" data-play_id="#{{ current_music }}">
+                                        <ul>
+                                            <li class="list_title">
+                                                <div class="title_music">
+                                                    <div class="check"><input class="all_check" type="checkbox"></div>
+                                                    <div class="title-music-label"><label>歌曲</label></div>
+                                                </div>
+                                                <div class="title_singer"><label>歌手</label></div>
+                                                <div class="title_time"><label>时长</label></div>
+                                            </li>
+                                            {% for history in histories %}
+                                                <li>
+                                                    <div class="music-recording" id="{{ history.music.list_id }}">
+                                                        <div class="music">
+                                                            <div class="check"><input class="singer-check" type="checkbox" value="{{ history.music.list_id }}"><label class="serial-number">{{ forloop.counter }}</label></div>
+                                                            <div data-lrc="/static{{ history.music.lrc_path }}" class="music_name" data-id="#{{ history.music.list_id }}" data-back="/static{{ history.music.music_pic }}" data-picture="/static{{ history.music.music_pic }}" data-singer="{{ history.music.singer }}" data-music_path="/static{{ history.music.music_path }}" >
+                                                                <label>{{ history.music.music_name }}</label></div>
+                                                            <div class="delete"><a class="delete_a"></a></div>
+                                                            <div class="download"><a class="download_a" href="{% static history.music.music_path %}" download="{{ history.music.music_name }}.mp3"></a></div>
+                                                            <div class="add"><a class="add_a"></a></div>
+                                                            <div class="play" data-music_path="{{ history.music.music_path }}"><a class="play_a"></a></div>
+                                                        </div>
+                                                        <div class="singer"><a>{{ history.music.singer }}</a></div>
+                                                        <div class="time"><label>{{ history.music.length_time }}</label></div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
                                     </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    </form>
-                </div>
-                <div class="music_message">
-                    <div class="singer_message">
-                        <div class="singer_msg_pic"><img class="singer_msg_picture" src=""></div>
-                        <div class="music_msg_name">歌曲名: <a href="#"></a></div>
-                        <div class="singer_msg_name">歌手名: <a href="#"></a></div>
-                        <div class="album_msg_name">专辑名: <a href="#"></a></div>
-                    </div>
-                    <div class="lyrics"></div>
-                </div>
-                <div class="channel">
-                    <div class="menu-bar">
-                        <div class="pre"></div>
-                        <div class="audio_play"></div>
-                        <div class="next"></div>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="play_music">
-                            <a class="playing-music" href="#"></a>
-                            -
-                            <a class="playing-singer" href="#"></a></div>
-                        <div class="play_time">
-                            <span class="progress-span1">00:00</span>
-                            /
-                            <span class="progress-span2">00:00</span>
+                                </form>
                         </div>
-                        <div class="progress"></div>
-                        <div class="progress-runaway"></div>
-                        <div class="progress-btn"></div>
+                    <div class="col-md-2">
+                        <div class="music_message">
+                            <div class="singer_message">
+                                <div class="singer_msg_pic"><img class="singer_msg_picture" src=""></div>
+                                <div class="music_msg_name">歌曲名: <a href="#"></a></div>
+                                <div class="singer_msg_name">歌手名: <a href="#"></a></div>
+                                <div class="album_msg_name">专辑名: <a href="#"></a></div>
+                            </div>
+                            <div class="lyrics"></div>
+                        </div>
                     </div>
-                    <div class="func_menu">
-                        <div class="method"></div>
-                        <div class="like"></div>
-                        <div class="play_download"></div>
-                    </div>
-                    <div class="volume-bar">
-                        <div class="volume-progress"></div>
-                        <div class="volume-runaway"></div>
-                        <div class="volume-btn-mobile"></div>
-                        <div class="volume-btn"></div>
-                        <div class="div_like"></div>
-                        <a id="single-download" href="" download=""><div class="div_download"></div></a>
-                        <div class="div_while"></div>
-                    </div>
+                    <div class="col-md-1"></div>
                 </div>
-                <div class="windows">
-                    <span>弹出窗口</span>
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="channel">
+                            <div class="menu-bar">
+                                <div class="pre"></div>
+                                <div class="audio_play"></div>
+                                <div class="next"></div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="play_music">
+                                    <a class="playing-music" href="#"></a>
+                                    -
+                                    <a class="playing-singer" href="#"></a></div>
+                                <div class="play_time">
+                                    <span class="progress-span1">00:00</span>
+                                    /
+                                    <span class="progress-span2">00:00</span>
+                                </div>
+                                <div class="progress"></div>
+                                <div class="progress-runaway"></div>
+                                <div class="progress-btn"></div>
+                            </div>
+                            <div class="func_menu">
+                                <div class="method"></div>
+                                <div class="like"></div>
+                                <div class="play_download"></div>
+                            </div>
+                            <div class="volume-bar">
+                                <div class="volume-progress"></div>
+                                <div class="volume-runaway"></div>
+                                <div class="volume-btn-mobile"></div>
+                                <div class="volume-btn"></div>
+                                <div class="div_like"></div>
+                                <a id="single-download" href="" download=""><div class="div_download"></div></a>
+                                <div class="div_while"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1"></div>
                 </div>
-                <audio id="audio"></audio>
+                <audio id="audio" controls></audio>
+                <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}"></script>
+                <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
                 <script type="text/javascript" src="{% static 'js/player.js' %}"></script>
-                <script type="text/javascript" src="{% static 'js/music-list.js' %}" ></script>
+                <script type="text/javascript" src="{% static 'js/music.js' %}" ></script>
                 <script language="javascript">
                     //防止页面后退
                     history.pushState(null, null, document.URL);

@@ -89,7 +89,7 @@ def hot_recommend(num = 10):
     with open('../analytical_file/singer_recommend.txt', 'r', encoding='utf8') as f:
         data_list = f.readlines()
     data_list = sorted(data_list, key=order_rule)
-    lists = {'data':[],'message':'success'}
+    lists = {'data': [],'message':'success'}
     id_name_dic, name_id_dic = song_data_preprocessing()
     try:
         for song_singer_rate_time in data_list[-num:]:

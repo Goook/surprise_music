@@ -11,14 +11,37 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <ul>
-                 {% for music in hots %}
+                 {% for music in recommend %}
                      <li class="recommend-music-item">
+                        <a href="/music/player/{{ music.list_id }}" target="_blank">
                         <div>
                             <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
-                            <p>歌曲：{{ music.name }}</p>
-                            <p>歌手：{{ music.singer }}</p>
-                            <p>播放量：0</p>
+                            <div class="music-name"><p>歌曲：{{ music.music_name }}</p></div>
+                            <div class="music-singer"><p>歌手：{{ music.singer }}</p></div>
+                            <div class="play-no"><p>播放量：0</p></div>
                         </div>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <ul>
+                 {% for music in hots %}
+                     <li class="recommend-music-item">
+                        <h1>{{ music.list_id}}</h1>
+                        <a href="/music/player/{{ music.list_id }}" target="_blank">
+                            <div>
+                                <img class="recommend-music-img" src="{% static 'upload/mugshots/default.jpg' %}"/>
+                                <div class="music-name"><p>歌曲：{{ music.music_name }}</p></div>
+                                <div class="music-singer"><p>歌手：{{ music.singer }}</p></div>
+                                <div class="play-no"><p>播放量：0</p></div>
+                            </div>
+                        </a>
                     </li>
                 {% endfor %}
             </ul>

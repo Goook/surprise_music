@@ -1,7 +1,10 @@
 # Created by .ignore support plugin (hsz.mobi)
 
+
+venv/
 .venv/
 virtualenv/
 __pychche__/
 *.py[cod]
 .idea
+static/music/

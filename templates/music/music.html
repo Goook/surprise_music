@@ -1,0 +1,34 @@
+{% extends 'basic/base.html' %}
+{% load static %}
+
+
+{% block main %}
+    {% if user.id %}
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-9">
+                  <div class="panel-body">
+                    <ul class="nav nav-pills">
+                      <li role="presentation" class="active"><a href="#">我喜欢</a></li>
+                      <li role="presentation"><a href="#">历史记录</a></li>
+                    </ul>
+                  </div>
+                 <div class="container">
+
+                 </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    {% else %}
+        <div class="jumbotron">
+              <div class="container">
+                <h1>登录才能查看自己的歌单哦</h1>
+                    <p><a class="btn btn-primary btn-lg" href="/accounts/login/" role="button">登录</a></p>
+              </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block bottom %}
+    <script src="/static/js/music.js"></script>
+{% endblock %}

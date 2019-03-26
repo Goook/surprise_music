@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<table class="table table-striped">
+    <tr>
+        <td></td>
+        <td><b>#</b></td>
+        <td><b>题目</b></td>
+        <td><b>解答</b></td>
+        <td><b>通过率</b></td>
+        <td><b>难度</b></td>
+    </tr>
+    {% for problem in problems %}
+        <tr>
+            {% if problems %}
+                <td></td>
+            {% else %}
+                <td></td>
+            {% endif %}
+            <td>{{ problem.id }}</td>
+            <td><a href="/problems/{{ problem.id }}">{{ problem.title }}</a></td>
+            <td>#</td>
+            <td>100%</td>
+            <td>{{ problem.rank }}</td>
+        </tr>
+    {% endfor %}
+  </table>

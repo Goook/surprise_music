@@ -1,4 +1,16 @@
 $(function () {
+    let url = '/music/favourite/'
+    $.get(url, function (res) {
+        if(res['status']){
+            $('.container').html(res['data'])
+        }else{
+            alert(res['msg'])
+        }
+    })
+});
+
+
+$(function () {
     const ELEMENT = {
         rows: '.rows',
         linkDownload: '.download_a',
@@ -11,6 +23,8 @@ $(function () {
         window: '.windows',
         singleDeleteMusic: '.single-delete-music',
     };
+
+    // $('.container').on('')
 
     $(ELEMENT.singerAddToSheet).click(function (e) {
         musicId = $(this).data('music_id');

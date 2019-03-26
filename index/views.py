@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
+from django.template import loader
 from django.views import View
 from django.views.generic import ListView
 
-from mymusic.models import MusicList
+from music.models import MusicList
 
 
 class IndexView(ListView):
@@ -17,6 +18,6 @@ class IndexView(ListView):
         content = super().get_context_data(object_list=object_list, **kwargs)
         content['hots'] = content['musics'][:10]
         content['recommend'] = content['musics'][10:20]
-
+        return content
 
 
