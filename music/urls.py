@@ -8,6 +8,7 @@ urlpatterns = [
     path(r'favourite/', views.MusicFavouriteView.as_view()),
     path(r'history/', views.MusicHistoryView.as_view()),
     path(r'player/', views.PlayerView.as_view(), name='player'),
-    path(r'player/<int:id>', views.PlayerView.as_view(), name='player')
+    path(r'player/<int:id>', views.PlayerView.as_view(), name='player'),
+    path(r'player/like/', views.PlayerLikeView.as_view())
 
 ]

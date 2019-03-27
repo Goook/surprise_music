@@ -1,0 +1,28 @@
+{% extends 'basic/base.html' %}
+{% load static %}
+
+
+{% block main %}
+    <table class="table table-striped">
+        <tr>
+            <td><b>#</b></td>
+            <td><b>歌曲</b></td>
+            <td><b>歌手</b></td>
+            <td><b>专辑</b></td>
+            <td><b>时长</b></td>
+        </tr>
+        {% for music in musics %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="/music/player/{{ music.list_id }}?location=search" target="player_window">{{ music.music_name }}</a></td>
+                <td>{{ music.singer }}</td>
+                <td>{{ music.music_name }}</td>
+                <td>{{ music.length_time }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block bottom %}
+    <script src="/static/js/music.js"></script>
+{% endblock %}

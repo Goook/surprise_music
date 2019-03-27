@@ -26,6 +26,8 @@ class MusicList(models.Model):
         ordering = ['list_id']
 
 
+
+
 class MusicFavourite(models.Model):
     favourite_id = models.AutoField(primary_key=True)
 
@@ -47,9 +49,12 @@ class MusicHistory(models.Model):
     class Meta:
         db_table = 'music_history'
 
-
 class Singer(models.Model):
-    pass
+    singer_name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'singer'
+
 
 
 class MusicLike(models.Model):

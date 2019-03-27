@@ -1,24 +1,18 @@
 <table class="table table-striped">
     <tr>
-        <td></td>
         <td><b>#</b></td>
-        <td><b>题目</b></td>
-        <td><b>解答</b></td>
-        <td><b>通过率</b></td>
-        <td><b>难度</b></td>
+        <td><b>歌曲</b></td>
+        <td><b>歌手</b></td>
+        <td><b>专辑</b></td>
+        <td><b>时长</b></td>
     </tr>
-    {% for problem in problems %}
+    {% for history in histories %}
         <tr>
-            {% if problems %}
-                <td></td>
-            {% else %}
-                <td></td>
-            {% endif %}
-            <td>{{ problem.id }}</td>
-            <td><a href="/problems/{{ problem.id }}">{{ problem.title }}</a></td>
-            <td>#</td>
-            <td>100%</td>
-            <td>{{ problem.rank }}</td>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="/music/player/{{ history.history_id }}" target="player_window">{{ history.music.music_name }}</a></td>
+            <td>{{ history.music.singer }}</td>
+            <td>{{ history.music.music_name }}</td>
+            <td>{{ history.music.length_time }}</td>
         </tr>
     {% endfor %}
-  </table>
+</table>

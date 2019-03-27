@@ -13,7 +13,7 @@
             <ul>
                  {% for music in recommend %}
                      <li class="recommend-music-item">
-                        <a href="/music/player/{{ music.list_id }}" target="_blank">
+                        <a href="/music/player/{{ music.list_id }}" target="player_window">
                         <div>
                             <img class="recommend-music-img" src="/static{{ music.music_pic }}"/>
                             <div class="music-name"><p>歌曲：{{ music.music_name }}</p></div>
@@ -34,7 +34,7 @@
                  {% for music in hots %}
                      <li class="recommend-music-item">
                         <h1>{{ music.list_id}}</h1>
-                        <a href="/music/player/{{ music.list_id }}" target="_blank">
+                        <a href="/music/player/{{ music.list_id }}" target="player_window">
                             <div>
                                 <img class="recommend-music-img" src="/static{{ music.music_pic }}"/>
                                 <div class="music-name"><p>歌曲：{{ music.music_name }}</p></div>

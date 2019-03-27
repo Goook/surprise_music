@@ -21,3 +21,14 @@ class User(AbstractUser):
         verbose_name_plural = '用户'
 
 
+class UserLike(models.Model):
+    user_id = models.IntegerField()
+    music_id = models.IntegerField()
+    singer_id = models.IntegerField()
+    like = models.IntegerField(default=0)
+    search = models.IntegerField(default=0)
+    play = models.IntegerField(default=0)
+    download = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'user_like'

@@ -114,6 +114,39 @@ $(function () {
         request.send();
     }
 
+    Audio.audio.ontimeupdate = function () {
+        // for (let i = 0; i < Audio.lyrics.length; i++){
+        //     if (this.currentTime >= Math.floor(Audio.lyrics[i][0])) {
+        //         $("#" + Audio.lyrics[i][0]).stop().addClass('active').siblings().removeClass('active')
+        //         // $("#" + parseInt(Audio.lyrics[i][0])).css('color', '#31c27c');
+        //     }else{
+        //         return ;
+        //     }
+        //
+        // }
+        let curTime = Math.floor(this.currentTime)
+        $('#lyrics-msg p').each(function () {
+            playTime = $(this).data('play')
+            if(curTime == playTime){
+                $(this).stop().addClass('active').siblings().removeClass('active')
+            }else{
+                return;
+            }
+            var index = $(this).data("index"); //当前元素下标
+            var lineHeight =$(this).height() ; //一行歌词高度
+            var boxHeight = $('#lyrics-msg').height(); //歌词显示区域高度
+            var screensize = boxHeight / lineHeight; //一屏显示多少句歌词
+            var half = Math.floor(screensize / 2); //半屏歌词数量
+            //当前歌词超过半屏
+            if(index > half){
+                //计算出超过的高度 减去 一行歌词的高度
+                var top = (half - index) * lineHeight + lineHeight
+                $('#lyrics-msg').css({
+                "top" : parseInt(top) + "px"
+                });
+            }
+        })
+    };
 
     function changeHtmlPlayMessage(url, preId, currentId) {
         $(preId).find('a').css('color', '#c9c9c9');
@@ -294,6 +327,7 @@ $(function () {
 
     // 点击收藏按钮所执行的函数
     function addToLike(){
+        alert('sdfsdf')
         let selectedMusicId = [];
         $(ELEMENT.singerCheck).each(function () {
             if($(this).is(':checked')){
@@ -317,4 +351,22 @@ $(function () {
         });
     }
     $(ELEMENT.btnLike).click(addToLike);
+
+
+    //点击收藏按钮收藏音乐
+    $(ELEMENT.divLike).click(function () {
+        let musicId = $.cookie('music_id');
+        let that = $(this)
+        $.post("/music/player/like/",{"music_id": musicId },function(response){
+            if(response['status'] && response['result'] === 1){
+                that.addClass('div_like_click');
+                that.removeClass('div_like');
+            }else{
+               that.addClass('div_like');
+               that.removeClass('div_like_click');
+            }
+
+        });
+        // $(this).css('background-image', 'url("/static/images/like_icon_5.png")');
+    });
 });

@@ -1,6 +1,5 @@
 <table class="table table-striped">
     <tr>
-        <td></td>
         <td><b>#</b></td>
         <td><b>歌曲</b></td>
         <td><b>歌手</b></td>
@@ -9,12 +8,11 @@
     </tr>
     {% for favourite in favourites %}
         <tr>
-            <td></td>
-            <td>{{ favourite.id }}</td>
-            <td><a href="/music/player/{{ favourite.id }}">{{ favourite.music.music_name }}</a></td>
-            <td>#</td>
-            <td>100%</td>
-            <td>{{ favourite.music.duration }}</td>
+            <td>{{ forloop.counter }}</td>
+            <td><a href="/music/player/{{ favourite.favourite_id }}" target="player_window">{{ favourite.music.music_name }}</a></td>
+            <td>{{ favourite.music.singer }}</td>
+            <td>{{ favourite.music.music_name }}</td>
+            <td>{{ favourite.music.length_time }}</td>
         </tr>
     {% endfor %}
 </table>
