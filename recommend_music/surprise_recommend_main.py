@@ -8,7 +8,8 @@ from surprise import Dataset
 
 
 def recommend_model():
-    file_path = os.path.expanduser('../analytical_file/singer_song.txt')
+    singer_song_path = os.path.join(os.path.dirname(__file__), 'singer_song.txt')
+    file_path = os.path.expanduser(singer_song_path)
     # 指定文件格式
     reader = Reader(line_format='user item rating timestamp', sep=',')
     # 从文件读取数据
@@ -23,7 +24,8 @@ def recommend_model():
 
 
 def playlist_data_preprocessing():
-    csv_reader = csv.reader(open('../analytical_file/singer_id_to_name.txt', encoding='utf-8'))
+    singer_id_to_name_path = os.path.join(os.path.dirname(__file__), 'singer_id_to_name.txt')
+    csv_reader = csv.reader(open(singer_id_to_name_path, encoding='utf-8'))
     id_name_dic = {}
     name_id_dic = {}
     for row in csv_reader:
@@ -34,7 +36,8 @@ def playlist_data_preprocessing():
 
 
 def song_data_preprocessing():
-    csv_reader = csv.reader(open('../analytical_file/song_id_to_name.txt', encoding='utf8'))
+    song_id_to_name_path = os.path.join(os.path.dirname(__file__), 'song_id_to_name.txt')
+    csv_reader = csv.reader(open(song_id_to_name_path, encoding='utf-8'))
     id_name_dic = {}
     name_id_dic = {}
     for row in csv_reader:
@@ -45,7 +48,7 @@ def song_data_preprocessing():
 def recommend_data(song_name, source):
     song_id = '100002'
     singer_id = '100003'
-    with open('../analytical/singer_song.txt', 'a') as f:
+    with open('singer_song.txt', 'a') as f:
         size = f.tell()
         f.write(song_id+','+singer_id+','+str(source)+',1300000')
     return size
@@ -85,7 +88,8 @@ def order_rule(s):
 
 
 def hot_recommend(num = 10):
-    with open('../analytical_file/singer_song.txt', 'r', encoding='utf8') as f:
+    singer_song_path = os.path.join(os.path.dirname(__file__), 'singer_song.txt')
+    with open(singer_song_path, 'r', encoding='utf-8') as f:
         data_list = f.readlines()
     data_list = sorted(data_list, key=order_rule)
     lists = {'data': [],'message':'success'}
