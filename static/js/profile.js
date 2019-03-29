@@ -30,6 +30,11 @@ $(function () {
         }
         $(fieldClass).html(html)
     });
+
+    $('.mugshot-username').on('click', '.mugshot-img', function () {
+        swal('')
+    })
+
     $('.profile-panel').on('click', '.edit-cancel', function () {
         let initValue = $('.profile-text-input').data('initial');
         let field = $('.profile-update-group').data('field');

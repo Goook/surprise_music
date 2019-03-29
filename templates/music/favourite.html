@@ -9,7 +9,7 @@
     {% for favourite in favourites %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td><a href="/music/player/{{ favourite.favourite_id }}" target="player_window">{{ favourite.music.music_name }}</a></td>
+            <td><a href="/music/player/{{ favourite.favourite.music.list_id }}" target="player_window">{{ favourite.music.music_name }}</a></td>
             <td>{{ favourite.music.singer }}</td>
             <td>{{ favourite.music.music_name }}</td>
             <td>{{ favourite.music.length_time }}</td>

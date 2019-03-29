@@ -32,3 +32,13 @@
     /*border-top: 0;*/
     /*border: 0 solid transparent !important;*/
 }
+
+.mugshot-btn{
+    margin-top: 20px;
+}
+.mugshot-img{
+    cursor: pointer;
+}
+.mugshot-img:hover{
+    box-shadow: 10px 10px 5px #888888;
+}

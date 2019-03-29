@@ -10,6 +10,7 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
+            <h3>猜你所想</h3>
             <ul>
                  {% for music in recommends %}
                      <li class="recommend-music-item">
@@ -30,10 +31,10 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
+            <h3>大家都在听</h3>
             <ul>
                  {% for music in hots %}
                      <li class="recommend-music-item">
-                        <h1>{{ music.list_id}}</h1>
                         <a href="/music/player/{{ music.list_id }}" target="player_window">
                             <div>
                                 <img class="recommend-music-img" src="/static{{ music.music_pic }}"/>

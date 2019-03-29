@@ -9,7 +9,7 @@
     {% for history in histories %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td><a href="/music/player/{{ history.history_id }}" target="player_window">{{ history.music.music_name }}</a></td>
+            <td><a href="/music/player/{{ history.music.list_id }}" target="player_window">{{ history.music.music_name }}</a></td>
             <td>{{ history.music.singer }}</td>
             <td>{{ history.music.music_name }}</td>
             <td>{{ history.music.length_time }}</td>
