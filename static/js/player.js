@@ -226,13 +226,13 @@ $(function () {
         if (second < 10) second = '0' + second;
         $(ELEMENT.duration).html(minute + ':' + second);
         let btnPlay = $(ELEMENT.btnPlay);
-        btnPlay.toggleClass('audio_pause');
-        btnPlay.toggleClass('audio_play');
-        if (Audio.audio.paused){
-             Audio.audio.play();
+        if(Audio.audio.paused)
+        {
+            Audio.audio.play()
+            btnPlay.toggleClass('audio_pause');
+            btnPlay.toggleClass('audio_play');
         }
-        else
-            Audio.audio.pause();
+
         // $(ELEMENT.playingMusicName).html(Audio.musicName[Audio.currentIndex]);
         // $(ELEMENT.playingSingerName).html(Audio.musicSinger[Audio.currentIndex]);
     };
@@ -268,7 +268,6 @@ $(function () {
         let currentId = Audio.rowsId[Audio.currentIndex];
         let url = Audio.lrc[Audio.currentIndex];
         changeHtmlPlayMessage(url, preId,currentId);
-        Audio.audio.play()
     }
 
     $(ELEMENT.channel).on('click', ELEMENT.volumeProgress, function () {
@@ -304,7 +303,6 @@ $(function () {
         let currentId = Audio.rowsId[Audio.currentIndex];
         let url = Audio.lrc[Audio.currentIndex];
         changeHtmlPlayMessage(url, preId, currentId);
-        Audio.audio.play()
     });
 
     function displayCurrentTime() {
@@ -343,7 +341,6 @@ $(function () {
         let url = Audio.lrc[Audio.currentIndex];
         changeHtmlPlayMessage(url, preId,currentId);
         checkMusicLikeState(musicId)
-        Audio.audio.play();
     })
 
     $(ELEMENT.channel).on('click', ELEMENT.divWhile, function () {

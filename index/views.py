@@ -55,6 +55,7 @@ class IndexView(ListView):
                         temp.append(list(self.queryset)[i])
                 recommends = temp
             except :
+                print('启动异常')
                 recommends = random.sample(list(self.queryset), 10)
         print(recommends)
 

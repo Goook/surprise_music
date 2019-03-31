@@ -110,34 +110,27 @@ class PlayerLikeView(View):
         music_id = request.POST.get('music_id')
         user_id = self.request.user.id
         try:
-            music = MusicFavourite.objects.get(user_id=user_id, music_id=music_id)
-            try:
-                user_like = UserLike.objects.get(music_id=music_id, user_id=request.user.id)
-            except:
-                user_like = UserLike(music_id=music_id, user_id=request.user.id)
-            if music:
-                music.delete()
-                user_like.like = 0
-                user_like.save()
-                return JsonResponse({
-                    'status': True,
-                    'result': -1,
-                    'msg': None
-                })
-            else:
-                user_like.like = 1
-                user_like.save()
-                MusicFavourite.objects.create(music_id=music_id, user_id=request.user.id)
-                return JsonResponse({
-                    'status': True,
-                    'result': 1,
-                    'msg': None
-                })
+            user_like = UserLike.objects.get(music_id=music_id, user_id=request.user.id)
         except:
+            user_like = UserLike(music_id=music_id, user_id=request.user.id)
+        try:
+            music = MusicFavourite.objects.get(user_id=user_id, music_id=music_id)
+            music.delete()
+            user_like.like = 0
+            user_like.save()
             return JsonResponse({
-                'status': False,
-                'result': 0,
-                'msg': '收藏失败'
+                'status': True,
+                'result': -1,
+                'msg': None
+            })
+        except:
+            MusicFavourite.objects.create(music_id=music_id, user_id=request.user.id)
+            user_like.like = 1
+            user_like.save()
+            return JsonResponse({
+                'status': True,
+                'result': 1,
+                'msg': None
             })
 
 

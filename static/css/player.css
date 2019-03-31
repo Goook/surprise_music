@@ -362,6 +362,7 @@ a:hover{
 }
 .lyrics p{
     line-height: 30px;
+    margin: 0;
 }
 .active{
     color: #31c27c;
@@ -455,7 +456,7 @@ a:hover{
     cursor: pointer;
     position: relative;
     left: 0;
-    top: 13.5px;
+    top: 14.5px;
     width: 0;
     height: 0;
     background: #8AD1EC;
