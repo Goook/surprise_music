@@ -166,6 +166,7 @@ a:hover{
     color: #c9c9c9;
 }
 .music_list li{
+    cursor: pointer;
     display: block;
     width: 100%;
     height: 50px;
