@@ -43,7 +43,7 @@ $(function () {
         albumMsgName: '.album_msg_name',
         pictureBackground: '#pic_bg',
         singerDownloadId: '#single-download',
-        divLike: '.div_like',
+        divLike: '#div_like',
         divWhile: '.div_while',
         window: '.windows',
         allCheck: '.all_check',
@@ -51,6 +51,7 @@ $(function () {
         lyrics: '.lyrics',
 
     };
+
 
     var beginProgressLocation = $(ELEMENT.btnProgress).offset().left;
     var endProgressLocation = $(ELEMENT.durationProgress).outerWidth() + beginProgressLocation;
@@ -270,9 +271,24 @@ $(function () {
         Audio.audio.play()
     }
 
+    $(ELEMENT.channel).on('click', ELEMENT.volumeProgress, function () {
+        let currentVolumeLocation = e.pageX;
+        let volumeLength = currentVolumeLocation - beginVolumeLocation;
+        if (currentVolumeLocation >= beginVolumeLocation && currentVolumeLocation <= endVolumeLocation) {
+            $(ELEMENT.btnVolume).css('left', currentVolumeLocation);
+            $(ELEMENT.currentVolumeProgress).css('width', volumeLength);
+            // let currentRunWidth = $('.volume-runaway').outerWidth();
+            Audio.audio.volume = volumeLength / $(this).outerWidth();
+            currentVolume = Audio.audio.volume;
+            volume = Audio.audio.volume;
+        }
+    })
+
     Audio.audio.onended = nextMusic;
 
     $(ELEMENT.channel).on('click', ELEMENT.btnNext, nextMusic);
+
+
 
     $(ELEMENT.channel).on('click', ELEMENT.btnPre, function () {
         let preId = Audio.rowsId[Audio.currentIndex];
@@ -303,14 +319,30 @@ $(function () {
 
     var timer = setInterval(displayCurrentTime, 500);
 
+    function checkMusicLikeState(musicId){
+        let url = '/music/player/like/';
+        let that = $(ELEMENT.divLike)
+        $.get(url, {'musicId': musicId}, function (res) {
+            if(res['status'] && res['result'] === 1){
+                that.addClass('div_like_click');
+                that.removeClass('div_like');
+            }else{
+               that.addClass('div_like');
+               that.removeClass('div_like_click');
+            }
+        })
+    }
+
     $(ELEMENT.musicName).dblclick(function (e) {
         let preId = Audio.rowsId[Audio.currentIndex];
         let currentId = $(this).data('id');
+        let musicId = $(this).data('music-id')
         let targetIndex = $(currentId).find(ELEMENT.serialNumber).html() - 1;
         Audio.currentIndex = targetIndex >= 0 && targetIndex <= Audio.srcs.length -1 ? targetIndex : 0;
         Audio.audio.src = Audio.srcs[Audio.currentIndex];
         let url = Audio.lrc[Audio.currentIndex];
         changeHtmlPlayMessage(url, preId,currentId);
+        checkMusicLikeState(musicId)
         Audio.audio.play();
     })
 
@@ -324,33 +356,6 @@ $(function () {
             $(this).css('background-image', 'url("/static/images/random_play.png")')
         }
     });
-
-    // 点击收藏按钮所执行的函数
-    function addToLike(){
-        alert('sdfsdf')
-        let selectedMusicId = [];
-        $(ELEMENT.singerCheck).each(function () {
-            if($(this).is(':checked')){
-                selectedMusicId.push($(this).attr('value'));
-            }
-        });
-
-        $.ajax({
-             type: "POST",
-             url: "/player/like_selected/",
-             traditional:true,
-             data: {'list': selectedMusicId},
-             success: function(response) {
-                 let myWindow = $(ELEMENT.window)
-                 myWindow.find('span').html(response);
-                 myWindow.css('display', 'block');
-                 setTimeout(function () {
-                     myWindow.css('display', 'none');
-                 }, 1000);
-             },
-        });
-    }
-    $(ELEMENT.btnLike).click(addToLike);
 
 
     //点击收藏按钮收藏音乐
@@ -370,3 +375,18 @@ $(function () {
         // $(this).css('background-image', 'url("/static/images/like_icon_5.png")');
     });
 });
+
+$(function () {
+    let checkMusicLikeState = function () {
+        let that = $('#div_like')
+        let flag = that.data('flag');
+        if(flag){
+            that.addClass('div_like_click');
+            that.removeClass('div_like');
+        }else{
+           that.addClass('div_like');
+           that.removeClass('div_like_click');
+        }
+    }
+    checkMusicLikeState()
+})

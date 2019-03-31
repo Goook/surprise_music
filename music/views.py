@@ -82,12 +82,30 @@ class PlayerView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         content = super().get_context_data(object_list=object_list, **kwargs)
         content['current_music'] = self.kwargs.get('id')
+        user_id = self.request.user.id
+        flag = UserLike.objects.filter(music_id=content['current_music'], user_id=user_id)
+        content['flag'] = int(bool(flag))
         return content
-
 
 class PlayerLikeView(View):
     def get(self, request, *args, **kwargs):
-        pass
+        music_id = self.request.GET.get('musicId')
+        user_id = self.request.user.id
+        print(music_id, user_id)
+        flag = UserLike.objects.filter(music_id=music_id, user_id=user_id)
+        if flag and flag[0].like:
+            return JsonResponse({
+                'status': True,
+                'result': 1,
+                'msg': None
+            })
+        else:
+            all('sdff')
+            return JsonResponse({
+                    'status': True,
+                    'result': -1,
+                    'msg': None
+            })
 
     def post(self, request, *args, **kwargs):
         music_id = request.POST.get('music_id')

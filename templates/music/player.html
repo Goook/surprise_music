@@ -21,7 +21,7 @@
 {#                <div class="user_msg"><a href="/accounts/login/">请先登录</a></div>#}
 {#            {% endif %}#}
             <div class="main">
-                <div class="row">
+                <div class="row limit-margin">
                     <div class="col-md-1 margin_left"></div>
                     <div class="col-md-8 list">
 
@@ -30,7 +30,6 @@
                                         <ul>
                                             <li class="list_title">
                                                 <div class="title_music">
-                                                    <div class="check"><input class="all_check" type="checkbox"></div>
                                                     <div class="title-music-label"><label>歌曲</label></div>
                                                 </div>
                                                 <div class="title_singer"><label>歌手</label></div>
@@ -40,8 +39,8 @@
                                                 <li>
                                                     <div class="music-recording" id="{{ history.music.list_id }}">
                                                         <div class="music">
-                                                            <div class="check"><input class="singer-check" type="checkbox" value="{{ history.music.list_id }}"><label class="serial-number">{{ forloop.counter }}</label></div>
-                                                            <div data-lrc="/static{{ history.music.lrc_path }}" class="music_name" data-id="#{{ history.music.list_id }}" data-back="/static{{ history.music.music_pic }}" data-picture="/static{{ history.music.music_pic }}" data-singer="{{ history.music.singer }}" data-music_path="/static{{ history.music.music_path }}" >
+                                                            <div class="check"><label class="serial-number">{{ forloop.counter }}</label></div>
+                                                            <div data-music-id="{{ history.music.list_id }}" data-lrc="/static{{ history.music.lrc_path }}" class="music_name" data-id="#{{ history.music.list_id }}" data-back="/static{{ history.music.music_pic }}" data-picture="/static{{ history.music.music_pic }}" data-singer="{{ history.music.singer }}" data-music_path="/static{{ history.music.music_path }}" >
                                                                 <label>{{ history.music.music_name }}</label></div>
                                                             <div class="delete"><a class="delete_a"></a></div>
                                                             <div class="download"><a class="download_a" href="{% static history.music.music_path %}" download="{{ history.music.music_name }}.mp3"></a></div>
@@ -60,15 +59,12 @@
                     <div class="col-md-2 music_message">
                         <div class="singer_message">
                             <div class="singer_msg_pic"><img class="singer_msg_picture" src=""></div>
-                            <div class="music_msg_name">歌曲名: <a href="#"></a></div>
-                            <div class="singer_msg_name">歌手名: <a href="#"></a></div>
-                            <div class="album_msg_name">专辑名: <a href="#"></a></div>
                         </div>
                         <div class="lyrics"></div>
                     </div>
                     <div class="col-md-1"></div>
                 </div>
-                <div class="row">
+                <div class="row bottom-channel-div">
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
                         <div class="channel">
@@ -101,7 +97,7 @@
                                 <div class="volume-runaway"></div>
                                 <div class="volume-btn-mobile"></div>
                                 <div class="volume-btn volume-btn-click"></div>
-                                <div class="div_like"></div>
+                                <div class="div_like" id="div_like" data-flag="{{ flag }}"></div>
                                 <a id="single-download" href="" download=""><div class="div_download"></div></a>
                                 <div class="div_while"></div>
                             </div>
@@ -109,14 +105,13 @@
                     </div>
                     <div class="col-md-1"></div>
                 </div>
-                <audio id="audio" controls></audio>
+                <audio id="audio"></audio>
                 <div class="windows">
                     <span>弹出窗口</span>
                 </div>
                 <script type="text/javascript" src="{% static 'js/jquery-1.11.3.js' %}"></script>
                 <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
                 <script type="text/javascript" src="{% static 'js/player.js' %}"></script>
-                <script type="text/javascript" src="{% static 'js/music.js' %}" ></script>
                 <script language="javascript">
                     //防止页面后退
                     history.pushState(null, null, document.URL);
