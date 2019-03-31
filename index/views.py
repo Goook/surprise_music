@@ -1,3 +1,5 @@
+import random
+
 from django.db.models import Count, Sum, Max
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -30,12 +32,13 @@ class IndexView(ListView):
                 max_like_music_id = music.music_id
         try:
             music = MusicList.objects.get(list_id=max_like_music_id)
+            recommend_id_list = playlist_recommend_main(music.music_name)
+            music_id_list = [d['song_id'] for d in recommend_id_list['data']]
+            recommends = MusicList.objects.filter(list_id__in=music_id_list)
         except:
-            music = hots[0]
-        recommend_id_list = playlist_recommend_main(music.music_name)
+            print('冷启动')
+            recommends = random.sample(list(self.queryset), 10)
 
-        music_id_list = [d['song_id'] for d in recommend_id_list['data']]
-        recommends = MusicList.objects.filter(list_id__in=music_id_list)
         return (recommends, hots)
 
     def get_context_data(self, *, object_list=None, **kwargs):

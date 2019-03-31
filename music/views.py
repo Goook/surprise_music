@@ -91,16 +91,15 @@ class PlayerLikeView(View):
     def get(self, request, *args, **kwargs):
         music_id = self.request.GET.get('musicId')
         user_id = self.request.user.id
-        print(music_id, user_id)
-        flag = UserLike.objects.filter(music_id=music_id, user_id=user_id)
-        if flag and flag[0].like:
+        try:
+            music = MusicFavourite.objects.get(music_id=music_id, user_id=user_id)
+            print(music)
             return JsonResponse({
                 'status': True,
                 'result': 1,
                 'msg': None
             })
-        else:
-            all('sdff')
+        except:
             return JsonResponse({
                     'status': True,
                     'result': -1,
@@ -109,8 +108,9 @@ class PlayerLikeView(View):
 
     def post(self, request, *args, **kwargs):
         music_id = request.POST.get('music_id')
-        if music_id:
-            music = MusicFavourite.objects.filter(music_id=music_id)
+        user_id = self.request.user.id
+        try:
+            music = MusicFavourite.objects.get(user_id=user_id, music_id=music_id)
             try:
                 user_like = UserLike.objects.get(music_id=music_id, user_id=request.user.id)
             except:
@@ -118,6 +118,7 @@ class PlayerLikeView(View):
             if music:
                 music.delete()
                 user_like.like = 0
+                user_like.save()
                 return JsonResponse({
                     'status': True,
                     'result': -1,
@@ -125,13 +126,14 @@ class PlayerLikeView(View):
                 })
             else:
                 user_like.like = 1
+                user_like.save()
                 MusicFavourite.objects.create(music_id=music_id, user_id=request.user.id)
                 return JsonResponse({
                     'status': True,
                     'result': 1,
                     'msg': None
                 })
-        else:
+        except:
             return JsonResponse({
                 'status': False,
                 'result': 0,
