@@ -1,5 +1,6 @@
 import random
 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum, Max
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -13,10 +14,13 @@ from accounts.models import UserLike
 from music.models import MusicList
 
 
+
+
 class IndexView(ListView):
     template_name = 'index/index.html'
     queryset = MusicList.objects.all()
     context_object_name = 'recommends_hots'
+
 
     def get_queryset(self):
         user_likes = UserLike.objects.values('music_id').annotate(
@@ -37,7 +41,22 @@ class IndexView(ListView):
             recommends = MusicList.objects.filter(list_id__in=music_id_list)
         except:
             print('冷启动')
-            recommends = random.sample(list(self.queryset), 10)
+            try:
+                import datetime
+                print(self.request.user.birthday.year,'*'*100)
+                age =datetime.datetime.now().year - self.request.user.birthday.year
+                sex = self.request.user.sex
+                temp = []
+                if sex == '男':
+                    for i in range(int(age)+100,int(age)+100+50,5):
+                        temp.append(list(self.queryset)[i])
+                else:
+                    for i in range(int(age)+100,int(age)+100-50,-5):
+                        temp.append(list(self.queryset)[i])
+                recommends = temp
+            except :
+                recommends = random.sample(list(self.queryset), 10)
+        print(recommends)
 
         return (recommends, hots)
 
